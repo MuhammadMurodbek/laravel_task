@@ -8,7 +8,7 @@
     <div class="py-12">
         @if (auth()->user()->role->id == 1)
             <div>
-                @foreach (auth()->user()->applications as $list)
+                @foreach ($applications as $list)
                     <div class='flex justify-center my-3'>
                         <div class="rounded-xl border p-5 shadow-md w-9/12 bg-white">
                             <div class="flex w-full items-center justify-between border-b pb-3">
@@ -23,13 +23,18 @@
                                     <div class="text-xs text-neutral-500">{{ $list->created_at }}</div>
                                 </div>
                             </div>
-
-                            <div class="mt-4 mb-6">
-                                <div class="mb-3 text-xl font-bold">Nulla sed leo tempus, feugiat velit vel, rhoncus
-                                    neque?
+                            <div class="flex justify-center">
+                                <div class="mt-4 mb-6">
+                                    <div class="mb-3 text-xl font-bold">Nulla sed leo tempus, feugiat velit vel, rhoncus
+                                        neque?
+                                    </div>
+                                    <div class="text-sm text-neutral-600">{{ $list->message }}</div>
                                 </div>
-                                <div class="text-sm text-neutral-600">{{ $list->message }}</div>
+                                <div>
+                                    <a href="{{ asset($list->file_url) }}">Link</a>
+                                </div>
                             </div>
+
 
                             <div>
                                 <div class="flex items-center justify-between text-slate-500">
@@ -39,6 +44,7 @@
                         </div>
                     </div>
                 @endforeach
+                {{ $applications->links() }}
             </div>
         @else
             <div class="flex flex-col items-center justify-center px-12 py-5">

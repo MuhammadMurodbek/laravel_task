@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\PostCreated;
 use App\Http\Requests\ApplicationRequest;
 use App\Models\Application;
 use Illuminate\Http\Request;
@@ -14,17 +15,17 @@ class ApplicationController extends Controller
         if($request->hasFile('file')){
             $name = $request->file('file')->getClientOriginalName();
             $path = $request->file('file')->storeAs(
-                'public',$name
+                'public/files',$name
             );
         }
 
-        Application::create([
+       $application = Application::create([
             'user_id'=>auth()->user()->id,
             'subject'=>$request->subject,
             'message'=>$request->message,
             'file_url'=>$path ?? null,
         ]);
-
+        PostCreated::dispatch($application);
         return redirect()->back();
     }
 }
