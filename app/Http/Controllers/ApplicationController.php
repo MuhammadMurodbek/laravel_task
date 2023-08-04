@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\ClientVisit;
 use App\Events\PostCreated;
 use App\Http\Requests\ApplicationRequest;
+use App\Jobs\ApplicationPodcast;
 use App\Models\Application;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -26,6 +28,8 @@ class ApplicationController extends Controller
             'file_url'=>$path ?? null,
         ]);
         PostCreated::dispatch($application);
+        ClientVisit::dispatch($application);
+        ApplicationPodcast::dispatch($application);
         return redirect()->back();
     }
 }
